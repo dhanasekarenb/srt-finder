@@ -1,0 +1,50 @@
+import os
+import shutil
+import argparse
+from pathlib import Path
+
+def dir_path(string):
+    if os.path.isdir(string):
+        return string
+    else:
+        raise NotADirectoryError(string)
+
+parser = argparse.ArgumentParser()
+parser.add_argument("-f", "--folder", type=dir_path, help="input folder location", required=True)
+parser.add_argument("-o", "--output", type=dir_path, help="output folder location", required=True)
+args = parser.parse_args()
+
+# Folder Name
+INPUT_DIR = args.folder
+OUTPUT_DIR = args.output
+
+i_path = Path(INPUT_DIR)
+o_path = Path(OUTPUT_DIR)
+
+# i_path = 'F://HW - XYZ//01 Renamed & Subbed - With IMDB Link//01 HEVC - X265'
+# o_path = 'F://HW - XYZ//01 Renamed & Subbed - With IMDB Link//no srt'
+
+checker = '.srt'
+
+def listdir(dir,dir_o,checker):
+    large_folders = os.listdir(dir)
+    for small_folders in large_folders:
+        small_folder_path = (str(dir) + '/' + small_folders)
+        filenames = os.listdir(small_folder_path)
+
+        for files in filenames:
+            srt_path = (str(dir) + '/' + small_folders + '/' + files)
+            
+            if (checker in srt_path):
+                condition = 1
+            else:
+                condition = 0
+
+        if (condition == 1):
+            pass
+        else:
+            dest = shutil.move(small_folder_path, dir_o)
+            
+
+
+listdir(i_path,o_path,checker)
